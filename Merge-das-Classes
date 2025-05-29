@@ -1,0 +1,155 @@
+# --- Definição da Classe Livro ---
+class Livro:
+    def __init__(self, titulo, autor, ano_publicacao, total_copias):
+        self.titulo = titulo
+        self.autor = autor
+        self.ano_publicacao = ano_publicacao
+        self.total_copias = total_copias
+        self.copias_disponiveis = total_copias
+
+    def emprestar(self):
+        if self.copias_disponiveis > 0:
+            self.copias_disponiveis -= 1
+            return True
+        else:
+            return False
+
+    def devolver(self):
+        if self.copias_disponiveis < self.total_copias:
+            self.copias_disponiveis += 1
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return f"Título: {self.titulo}, Autor: {self.autor}, Ano: {self.ano_publicacao}, " \
+               f"Disponíveis: {self.copias_disponiveis}/{self.total_copias}"
+
+# --- Definição da Classe Usuario ---
+class Usuario:
+    def __init__(self, nome, numero_identificacao, contato):
+        self.nome = nome
+        self.numero_identificacao = numero_identificacao
+        self.contato = contato
+        self.livros_emprestados = []
+
+    def adicionar_livro_emprestado(self, livro):
+        if livro not in self.livros_emprestados:
+            self.livros_emprestados.append(livro)
+            return True
+        return False
+
+    def remover_livro_emprestado(self, livro):
+        if livro in self.livros_emprestados:
+            self.livros_emprestados.remove(livro)
+            return True
+        return False
+
+    def __str__(self):
+        return f"Nome: {self.nome}, ID: {self.numero_identificacao}, Contato: {self.contato}" \
+               f"\nLivros Emprestados: {len(self.livros_emprestados)}"
+
+# --- Definição da Classe Biblioteca ---
+class Biblioteca:
+    def __init__(self):
+        self.acervo_livros = {}
+        self.lista_usuarios = {}
+
+    def cadastrar_livro(self, titulo, autor, ano_publicacao, total_copias):
+        if titulo in self.acervo_livros:
+            print(f"Erro: O livro '{titulo}' já está cadastrado na biblioteca.")
+            return False
+        
+        try:
+            ano_publicacao = int(ano_publicacao)
+            total_copias = int(total_copias)
+            if ano_publicacao <= 0 or total_copias <= 0:
+                print("Erro: Ano de publicação e número de cópias devem ser maiores que zero.")
+                return False
+        except ValueError:
+            print("Erro: Ano de publicação e número de cópias devem ser números inteiros válidos.")
+            return False
+
+        novo_livro = Livro(titulo, autor, ano_publicacao, total_copias)
+        self.acervo_livros[titulo] = novo_livro
+        print(f"Livro '{titulo}' cadastrado com sucesso!")
+        return True
+
+    def cadastrar_usuario(self, nome, numero_identificacao, contato):
+        if numero_identificacao in self.lista_usuarios:
+            print(f"Erro: O usuário com ID '{numero_identificacao}' já está cadastrado.")
+            return False
+        
+        novo_usuario = Usuario(nome, numero_identificacao, contato)
+        self.lista_usuarios[numero_identificacao] = novo_usuario
+        print(f"Usuário '{nome}' (ID: {numero_identificacao}) cadastrado com sucesso!")
+        return True
+
+    def emprestar_livro(self, id_usuario, titulo_livro):
+        print(f"Funcionalidade de empréstimo para '{titulo_livro}' para o usuário '{id_usuario}' a ser implementada.")
+        pass
+
+    def devolver_livro(self, id_usuario, titulo_livro):
+        print(f"Funcionalidade de devolução para '{titulo_livro}' por '{id_usuario}' a ser implementada.")
+        pass
+
+    def consultar_livro(self, criterio, valor):
+        print(f"Funcionalidade de consulta por {criterio}: '{valor}' a ser implementada.")
+        pass
+
+    def gerar_relatorios(self, tipo_relatorio):
+        print(f"Funcionalidade de relatório '{tipo_relatorio}' a ser implementada.")
+        pass
+    
+    def exibir_menu(self):
+        print("\n--- MENU DA BIBLIOTECA ---")
+        print("1. Cadastrar Livro")
+        print("2. Cadastrar Usuário")
+        print("3. Emprestar Livro")
+        print("4. Devolver Livro")
+        print("5. Consultar Livros")
+        print("6. Gerar Relatórios")
+        print("7. Sair")
+        print("--------------------------")
+
+    def iniciar(self):
+        while True:
+            self.exibir_menu()
+            opcao = input("Escolha uma opção: ")
+
+            if opcao == '1':
+                titulo = input("Título do livro: ")
+                autor = input("Autor: ")
+                ano = input("Ano de Publicação: ")
+                copias = input("Número de Cópias: ")
+                self.cadastrar_livro(titulo, autor, ano, copias)
+            elif opcao == '2':
+                nome = input("Nome do usuário: ")
+                identificacao = input("Número de Identificação: ")
+                contato = input("Contato: ")
+                self.cadastrar_usuario(nome, identificacao, contato)
+            elif opcao == '3':
+                id_usuario = input("ID do Usuário: ")
+                titulo_livro = input("Título do Livro: ")
+                self.emprestar_livro(id_usuario, titulo_livro)
+            elif opcao == '4':
+                id_usuario = input("ID do Usuário: ")
+                titulo_livro = input("Título do Livro: ")
+                self.devolver_livro(id_usuario, titulo_livro)
+            elif opcao == '5':
+                criterio = input("Consultar por (titulo/autor/ano): ").lower()
+                valor = input(f"Digite o {criterio}: ")
+                self.consultar_livro(criterio, valor)
+            elif opcao == '6':
+                tipo = input("Tipo de relatório (disponiveis/emprestados/usuarios): ").lower()
+                self.gerar_relatorios(tipo)
+            elif opcao == '7':
+                print("Saindo do sistema. Até mais!")
+                break
+            else:
+                print("Opção inválida. Por favor, tente novamente.")
+
+# --- Execução Principal do Programa ---
+if __name__ == "__main__":
+    biblioteca = Biblioteca()
+    biblioteca.iniciar()
