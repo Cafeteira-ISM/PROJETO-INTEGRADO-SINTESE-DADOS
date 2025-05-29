@@ -1,4 +1,4 @@
-# --- Definição da Classe Livro ---
+# Classe Livro
 class Livro:
     def __init__(self, titulo, autor, ano_publicacao, total_copias):
         self.titulo = titulo
@@ -25,7 +25,7 @@ class Livro:
         return f"Título: {self.titulo}, Autor: {self.autor}, Ano: {self.ano_publicacao}, " \
                f"Disponíveis: {self.copias_disponiveis}/{self.total_copias}"
 
-# --- Definição da Classe Usuario ---
+# Classe Usuario
 class Usuario:
     def __init__(self, nome, numero_identificacao, contato):
         self.nome = nome
@@ -49,7 +49,7 @@ class Usuario:
         return f"Nome: {self.nome}, ID: {self.numero_identificacao}, Contato: {self.contato}" \
                f"\nLivros Emprestados: {len(self.livros_emprestados)}"
 
-# --- Definição da Classe Biblioteca ---
+# Classe Biblioteca
 class Biblioteca:
     def __init__(self):
         self.acervo_livros = {}
@@ -85,13 +85,56 @@ class Biblioteca:
         print(f"Usuário '{nome}' (ID: {numero_identificacao}) cadastrado com sucesso!")
         return True
 
+
     def emprestar_livro(self, id_usuario, titulo_livro):
-        print(f"Funcionalidade de empréstimo para '{titulo_livro}' para o usuário '{id_usuario}' a ser implementada.")
-        pass
+        usuario = self.lista_usuarios.get(id_usuario)
+        livro = self.acervo_livros.get(titulo_livro)
+
+        if not usuario:
+            print(f"Erro de Empréstimo: Usuário com ID '{id_usuario}' não encontrado.")
+            return False
+        
+        if not livro:
+            print(f"Erro de Empréstimo: Livro '{titulo_livro}' não encontrado no acervo.")
+            return False
+
+        if not livro.emprestar():
+            print(f"Erro de Empréstimo: Nenhuma cópia de '{titulo_livro}' disponível para empréstimo.")
+            return False
+        
+        if usuario.adicionar_livro_emprestado(livro):
+            print(f"Livro '{titulo_livro}' emprestado com sucesso para o usuário '{usuario.nome}'.")
+            return True
+        else:
+            livro.devolver() 
+            print(f"Erro de Empréstimo: O usuário '{usuario.nome}' já possui este livro emprestado ou houve um problema interno.")
+            return False
+
 
     def devolver_livro(self, id_usuario, titulo_livro):
-        print(f"Funcionalidade de devolução para '{titulo_livro}' por '{id_usuario}' a ser implementada.")
-        pass
+        usuario = self.lista_usuarios.get(id_usuario)
+        livro = self.acervo_livros.get(titulo_livro)
+
+        if not usuario:
+            print(f"Erro de Devolução: Usuário com ID '{id_usuario}' não encontrado.")
+            return False
+        
+        if not livro:
+            print(f"Erro de Devolução: Livro '{titulo_livro}' não encontrado no acervo.")
+            return False
+
+        if not usuario.remover_livro_emprestado(livro): 
+            print(f"Erro de Devolução: O livro '{titulo_livro}' não foi encontrado na lista de empréstimos do usuário '{usuario.nome}'.")
+            return False
+        
+        if livro.devolver():
+            print(f"Livro '{titulo_livro}' devolvido com sucesso pelo usuário '{usuario.nome}'.")
+            return True
+        else:
+            usuario.adicionar_livro_emprestado(livro)
+            print(f"Erro de Devolução: Não foi possível atualizar a contagem de cópias de '{titulo_livro}'.")
+            return False
+
 
     def consultar_livro(self, criterio, valor):
         print(f"Funcionalidade de consulta por {criterio}: '{valor}' a ser implementada.")
@@ -149,7 +192,7 @@ class Biblioteca:
             else:
                 print("Opção inválida. Por favor, tente novamente.")
 
-# --- Execução Principal do Programa ---
+# Execução do Programa
 if __name__ == "__main__":
     biblioteca = Biblioteca()
     biblioteca.iniciar()
