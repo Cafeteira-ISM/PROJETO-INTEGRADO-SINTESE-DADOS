@@ -1,4 +1,3 @@
-# Classe Livro
 class Livro:
     def __init__(self, titulo, autor, ano_publicacao, total_copias):
         self.titulo = titulo
@@ -25,7 +24,6 @@ class Livro:
         return f"Título: {self.titulo}, Autor: {self.autor}, Ano: {self.ano_publicacao}, " \
                f"Disponíveis: {self.copias_disponiveis}/{self.total_copias}"
 
-# Classe Usuario
 class Usuario:
     def __init__(self, nome, numero_identificacao, contato):
         self.nome = nome
@@ -49,7 +47,6 @@ class Usuario:
         return f"Nome: {self.nome}, ID: {self.numero_identificacao}, Contato: {self.contato}" \
                f"\nLivros Emprestados: {len(self.livros_emprestados)}"
 
-# Classe Biblioteca
 class Biblioteca:
     def __init__(self):
         self.acervo_livros = {}
@@ -85,7 +82,6 @@ class Biblioteca:
         print(f"Usuário '{nome}' (ID: {numero_identificacao}) cadastrado com sucesso!")
         return True
 
-
     def emprestar_livro(self, id_usuario, titulo_livro):
         usuario = self.lista_usuarios.get(id_usuario)
         livro = self.acervo_livros.get(titulo_livro)
@@ -106,10 +102,9 @@ class Biblioteca:
             print(f"Livro '{titulo_livro}' emprestado com sucesso para o usuário '{usuario.nome}'.")
             return True
         else:
-            livro.devolver() 
+            livro.devolver()
             print(f"Erro de Empréstimo: O usuário '{usuario.nome}' já possui este livro emprestado ou houve um problema interno.")
             return False
-
 
     def devolver_livro(self, id_usuario, titulo_livro):
         usuario = self.lista_usuarios.get(id_usuario)
@@ -123,7 +118,7 @@ class Biblioteca:
             print(f"Erro de Devolução: Livro '{titulo_livro}' não encontrado no acervo.")
             return False
 
-        if not usuario.remover_livro_emprestado(livro): 
+        if not usuario.remover_livro_emprestado(livro):
             print(f"Erro de Devolução: O livro '{titulo_livro}' não foi encontrado na lista de empréstimos do usuário '{usuario.nome}'.")
             return False
         
@@ -135,16 +130,81 @@ class Biblioteca:
             print(f"Erro de Devolução: Não foi possível atualizar a contagem de cópias de '{titulo_livro}'.")
             return False
 
-
     def consultar_livro(self, criterio, valor):
-        print(f"Funcionalidade de consulta por {criterio}: '{valor}' a ser implementada.")
-        pass
+        encontrados = []
+        criterio = criterio.lower()
+
+        if criterio not in ['titulo', 'autor', 'ano']:
+            print("Erro de Consulta: Critério de busca inválido. Use 'titulo', 'autor' ou 'ano'.")
+            return []
+
+        if criterio == 'titulo':
+            if valor in self.acervo_livros:
+                encontrados.append(self.acervo_livros[valor])
+        else:
+            for livro in self.acervo_livros.values():
+                if criterio == 'autor':
+                    if valor.lower() in livro.autor.lower():
+                        encontrados.append(livro)
+                elif criterio == 'ano':
+                    try:
+                        valor_int = int(valor)
+                        if livro.ano_publicacao == valor_int:
+                            encontrados.append(livro)
+                    except ValueError:
+                        print("Erro de Consulta: Ano de publicação deve ser um número inteiro válido.")
+                        return []
+
+        if encontrados:
+            print(f"\n--- Resultados da Consulta por {criterio.capitalize()}: '{valor}' ---")
+            for livro in encontrados:
+                print(f"- {livro}")
+            print("--------------------------------------------------")
+        else:
+            print(f"Nenhum livro encontrado para {criterio}: '{valor}'.")
+        return encontrados
 
     def gerar_relatorios(self, tipo_relatorio):
-        print(f"Funcionalidade de relatório '{tipo_relatorio}' a ser implementada.")
-        pass
-    
+
+        tipo_relatorio = tipo_relatorio.lower()
+
+        print(f"\n--- RELATÓRIO: {tipo_relatorio.upper()} ---")
+
+        if tipo_relatorio == 'disponiveis':
+            livros_disponiveis = [livro for livro in self.acervo_livros.values() if livro.copias_disponiveis > 0]
+            if livros_disponiveis:
+                for livro in livros_disponiveis:
+                    print(f"- {livro}")
+            else:
+                print("Não há livros disponíveis no momento.")
+        
+        elif tipo_relatorio == 'emprestados':
+
+            livros_emprestados_total = []
+            for usuario in self.lista_usuarios.values():
+                if usuario.livros_emprestados:
+                    print(f"\n--- Livros emprestados por: {usuario.nome} (ID: {usuario.numero_identificacao}) ---")
+                    for livro_emprestado in usuario.livros_emprestados:
+                        print(f"- {livro_emprestado}")
+                    livros_emprestados_total.extend(usuario.livros_emprestados)
+            
+            if not livros_emprestados_total:
+                print("Não há livros emprestados no momento.")
+
+        elif tipo_relatorio == 'usuarios':
+            if self.lista_usuarios:
+                for usuario in self.lista_usuarios.values():
+                    print(f"- {usuario}")
+            else:
+                print("Nenhum usuário cadastrado.")
+        
+        else:
+            print("Tipo de relatório inválido. Use 'disponiveis', 'emprestados' ou 'usuarios'.")
+        
+        print("-----------------------------------")
+
     def exibir_menu(self):
+
         print("\n--- MENU DA BIBLIOTECA ---")
         print("1. Cadastrar Livro")
         print("2. Cadastrar Usuário")
@@ -192,7 +252,6 @@ class Biblioteca:
             else:
                 print("Opção inválida. Por favor, tente novamente.")
 
-# Execução do Programa
 if __name__ == "__main__":
     biblioteca = Biblioteca()
     biblioteca.iniciar()
