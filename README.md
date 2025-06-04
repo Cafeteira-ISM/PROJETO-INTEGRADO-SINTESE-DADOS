@@ -1,13 +1,14 @@
 Sistema de Gerenciamento de Biblioteca em Python
-Visão Geral do Projeto
-Este é um projeto acadêmico desenvolvido como parte dos requisitos para o curso superior de Tecnologia em Ciência de Dados da Universidade Anhanguera. O objetivo principal é criar um sistema de gerenciamento de biblioteca simples e funcional, utilizando a linguagem Python e o paradigma de Programação Orientada a Objetos (POO).
 
+
+Este é um projeto acadêmico desenvolvido como parte dos requisitos para o curso superior de Tecnologia em Ciência de Dados da Universidade Anhanguera. O objetivo principal é criar um sistema de gerenciamento de biblioteca simples e funcional, utilizando a linguagem Python e o paradigma de Programação Orientada a Objetos (POO).
 
 
 O sistema visa otimizar as operações de uma biblioteca, oferecendo funcionalidades para a catalogação de livros, cadastro de usuários e gestão de empréstimos e devoluções.
 
 
-Funcionalidades Implementadas
+Funcionalidades Implementadas:
+
 O sistema abrange as seguintes funcionalidades principais:
 
 Cadastro de Livros: Permite registrar novos livros com informações como título, autor, ano de publicação e número total de cópias.
@@ -56,6 +57,7 @@ O programa será executado diretamente na saída da célula, e você verá o men
 Exemplos de Uso
 Ao executar o programa, você verá um menu interativo:
 ![0 Menu](https://github.com/user-attachments/assets/7cc9a916-0502-4351-a301-c25db5c6a95d)
+
 Você pode interagir digitando o número da opção desejada e seguindo as instruções na tela, como exemplificado nas imagens do Projeto Integrado.
 
 
