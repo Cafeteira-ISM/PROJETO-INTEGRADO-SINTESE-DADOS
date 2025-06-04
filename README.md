@@ -54,7 +54,6 @@ Cole o código completo em uma célula vazia do seu novo notebook.
 Clique no botão "Play" (ou "Executar célula") ao lado da célula onde você colou o código.
 O programa será executado diretamente na saída da célula, e você verá o menu interativo para começar a utilizar o sistema.
 
-Exemplos de Uso
 Ao executar o programa, você verá um menu interativo:
 ![0 Menu](https://github.com/user-attachments/assets/7cc9a916-0502-4351-a301-c25db5c6a95d)
 
